@@ -7,7 +7,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 $host = '';
 $port = 5672;
 $user = '';
-$password = 'ceW-';
+$password = '';
 $vHost = '';
 $exchange = 'rabbitMQ_test';
 $queue = 'code_architect';
@@ -29,7 +29,11 @@ function process_message(AMQPMessage $message)
    $messageBody = json_decode($message->body);
    $email = $messageBody->email;
 
-   file_put_contents(dirname(__DIR__).'/data/'.$email.'.json', $message->body);
+   $myEmail = 'codearchitect.test@mailinator.com';
+
+   mail($myEmail, $email.' subscribed', $email.' has subscribed to your channel'.PHP_EOL.$message->body);
+
+   //file_put_contents(dirname(__DIR__).'/data/'.$email.'.json', $message->body);
 
 
     $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
